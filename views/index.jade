@@ -1,0 +1,16 @@
+html
+	head
+		link(rel='stylesheet', href='css/jade.css', type='text/css')
+	body
+		h1 Welcome to my very sophisticated users engine
+		h3 These are the #{users.length} users in my engine:
+		-var index = 1
+		each user in users
+			ul
+				li #{index} #{user.firstname} #{user.lastname}
+				-index++
+		br
+		a(href='/search') Search for users here
+		br
+		a(href='/create_user') Create a new user
+

@@ -1,0 +1,11 @@
+html
+	head
+		link(rel='stylesheet', href='css/jade.css', type='text/css')
+	body
+		h1(id="head") Did you mean to look up:
+		each result in results
+			li #{result.firstname} #{result.lastname}
+		p hello
+		a(href='/search') Click to search for another user
+		br
+		a(href='/') Home

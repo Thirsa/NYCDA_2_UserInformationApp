@@ -1,0 +1,18 @@
+html
+	head
+		link(rel='stylesheet', href='css/jade.css', type='text/css')
+	body
+		h1(id="head") Welcome
+		div.searchBox
+			br
+			label Search for users by:
+			form(name="login", action="/search", method="post")
+				br
+				input(id="input" type="text", name="firstname", placeholder=" Firstname/ Lastname or Email")
+				br
+				input(id="input" type="submit", value="Search" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1")
+	br
+	a(href='/create_user') Create a new user
+	a(href='/') Home
+
+

@@ -1,0 +1,19 @@
+html
+	head
+		link(rel='stylesheet', href='css/jade.css', type='text/css')
+	body
+		h1(id="head") Welcome
+		div.searchBox
+			br
+			label Create a new user:
+			form(name="login", action="create_user", method="post")
+				br
+				input(class="newUser" type="text", name="firstname", placeholder=" Firstname")
+				br
+				input(class="newUser" type="text", name="lastname", placeholder="Lastname")
+				br
+				input(class="newUser" type="text", name="email", placeholder="Email")
+				br
+				input(class="newUser" type="submit", value="submit")
+	a(href='/') Home
+
