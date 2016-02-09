@@ -1,13 +1,10 @@
 html
 	head
-		-console.log(results)
 	body
 		h1(id="head") Did you mean to look up:
-		//- each result in results
-			li 
-		each
-			ul
-				li= results
+		ul
+			li= results
+		br
 		a(href='/search') Click to search for another user
 		br
 		a(href='/') Home

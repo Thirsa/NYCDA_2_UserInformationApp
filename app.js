@@ -10,9 +10,9 @@ app.set('views', './views');
 app.set('view engine', 'jade');
 
 app.get('/', function (request, response) {
-	fs.readFile('public/users.json', function (error, data) {
-		if (error) {
-			console.log(error);
+	fs.readFile('public/users.json', function (err, data) {
+		if (err) {
+			throw err;
 		}
 
 		var parsedData = JSON.parse(data);
@@ -31,12 +31,11 @@ app.get('/create_user', function (request, response) {
 app.post('/create_user', bodyParser.urlencoded({
 	extended: true
 }), function(request, response) {
-	fs.readFile('public/users.json', "utf-8", function(err, data) {
+	fs.readFile('public/users.json', "utf-8", function (err, data) {
 		if (err) {
 			throw err;
 		}
 		users = JSON.parse(data);
-		console.log (users);
 		firstname = request.body.firstname;
 		lastname = request.body.lastname;
 		email = request.body.email;
@@ -55,9 +54,8 @@ app.post('/create_user', bodyParser.urlencoded({
 app.post('/search', bodyParser.urlencoded({
 	extended: true
 }), function(request, response) {
-		console.log("meow meow woef")
 
-	fs.readFile('public/users.json', 'utf-8', function(err, data) {
+	fs.readFile('public/users.json', 'utf-8', function (err, data) {
 		if (err) {
 			throw err;
 		}
@@ -72,20 +70,15 @@ app.post('/search', bodyParser.urlencoded({
 });
 
 app.get('/searchresult', function (request, response){
-	fs.readFile('public/users.json', function (error, data) {
-		if (error) {
-			console.log(error);
+	fs.readFile('public/users.json', function (err, data) {
+		if (err) {
+			throw err;
 		}
-
 		var users = JSON.parse(data);
-		var results = [];
-		console.log ("Hallo" + users)
+		var results = ["This person does not exist"];
+
 		for (i = 0; i < users.length; i++) {
 			if (request.query.firstname === users[i].firstname){results = (users[i].firstname +" "+ users[i].lastname +" "+ users[i].email)
-			}
-			else {
-				result = alert("Please enter a name")
-				response.render('search', {results: results});
 			}
 		}
 		response.render('searchresult', {results: results});
@@ -93,5 +86,5 @@ app.get('/searchresult', function (request, response){
 })
 
 var server = app.listen(3001, function () {
-	console.log('Example app listening on port: ' + server.address().port);
+	console.log("Port" +" "+server.address().port);
 });

@@ -7,11 +7,9 @@ html
 				$("#inputs").keyup(function(){ // If there is a key press in the input box with the id of "inputs" in the form tag below, the function will be called
 					$("#suggest").html("");
 					var inputs = $("#inputs").val().trim(); //The .trim() prevents the dropdown from showing when only the spacebar is hit
-					// inputs = $.trim(inputs)
 					if (inputs){ //this if makes sure the function only gets executed if inputs has a value, eg; exists
 						$.post(("/search/?inputs="+$("#inputs").val()), function(response, status){
-						// $.post(("/search/?inputs="+ "inputs", function(response, status){							
-							// $("#suggest").html("<ul>");
+						// $.post(("/search/?inputs="+ "inputs", function(response, status){													
 							for(result in response){
 								$("#suggest").append("<li>" + response[result] + "</li>");
 								$("#suggest li").click(function(){
@@ -24,9 +22,6 @@ html
 					};
 				});
 			});
-		//- style.
-		//- 	body {backgroundcolor: grey}
-		//- 	suggest{list-style-type:none}
 		body
 		h1(id="head") Welcome
 		div.searchBox
