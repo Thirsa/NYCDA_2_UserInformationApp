@@ -9,14 +9,14 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', './views');
 app.set('view engine', 'jade');
 
-app.get('/', function (req, res) {
+app.get('/', function (request, response) {
 	fs.readFile('public/users.json', function (error, data) {
 		if (error) {
 			console.log(error);
 		}
 
 		var parsedData = JSON.parse(data);
-		res.render('index', {users: parsedData});
+		response.render('index', {users: parsedData});
 	});
 });
 
@@ -55,7 +55,7 @@ app.post('/create_user', bodyParser.urlencoded({
 app.post('/search', bodyParser.urlencoded({
 	extended: true
 }), function(request, response) {
-		console.log("meow meow moew")
+		console.log("meow meow woef")
 
 	fs.readFile('public/users.json', 'utf-8', function(err, data) {
 		if (err) {
@@ -64,15 +64,33 @@ app.post('/search', bodyParser.urlencoded({
 		users = JSON.parse(data);
 		var results = [];
 		for (i = 0; i < users.length; i++) {
-			if (users[i].firstname === request.body.firstname || users[i].firstname === request.body.lastname) {
-				results = results.concat(users[i]);
+			if (request.query.inputs != " " && users[i].firstname.indexOf(request.query.inputs) === 0){results.push(users[i].firstname)
 			}
 		}
-		response.render('searchresult', {
-			results: results
-		});
+		response.send(results)
 	});
 });
+
+app.get('/searchresult', function (request, response){
+	fs.readFile('public/users.json', function (error, data) {
+		if (error) {
+			console.log(error);
+		}
+
+		var users = JSON.parse(data);
+		var results = [];
+		console.log ("Hallo" + users)
+		for (i = 0; i < users.length; i++) {
+			if (request.query.firstname === users[i].firstname){results = (users[i].firstname +" "+ users[i].lastname +" "+ users[i].email)
+			}
+			else {
+				result = alert("Please enter a name")
+				response.render('search', {results: results});
+			}
+		}
+		response.render('searchresult', {results: results});
+	});
+})
 
 var server = app.listen(3001, function () {
 	console.log('Example app listening on port: ' + server.address().port);
