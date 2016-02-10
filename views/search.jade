@@ -8,12 +8,12 @@ html
 				var lasttime = 0;
 				$("#inputs").keyup(function(){ // If there is a key press in the input box with the id of "inputs" in the form tag below, the function will be called
 					time = Date.now()
-					if (time - lasttime > 3000 || time === 0){
+					if (time - lasttime > 300 || time === 0){
 					lasttime = time;
 					$("#suggest").html("");
 					var inputs = $("#inputs").val().trim(); //The .trim() prevents the dropdown from showing when only the spacebar is hit
 						if (inputs){ //this if makes sure the function only gets executed if inputs has a value, eg; exists
-							$.post(("/search/?inputs="+$("#inputs").val()), function(response, status){
+							$.post("/search/?inputs="+ inputs, function(response, status){
 							// $.post(("/search/?inputs="+ "inputs", function(response, status){												
 								for(result in response){
 									$("#suggest").append("<li>" + response[result] + "</li>");
