@@ -12,14 +12,11 @@ html
 					lasttime = time;
 					$("#suggest").html("");
 					var inputs = $("#inputs").val().trim(); //The .trim() prevents the dropdown from showing when only the spacebar is hit
-						if (inputs){ //this if makes sure the function only gets executed if inputs has a value, eg; exists
-							$.post("/search/?inputs="+ inputs, function(response, status){
-							// $.post(("/search/?inputs="+ "inputs", function(response, status){												
+						if (inputs){ //this if makes sure the function only gets executed if inputs has a value/ exists
+							$.post("/search/?inputs="+ inputs, function(response, status){												
 								for(result in response){
 									$("#suggest").append("<li>" + response[result] + "</li>");
 									$("#suggest li").click(function(){
-										// var value = $(this).html();
-										// $("#inputs").val(value);
 										$("#inputs").val($(this).html());
 									})	
 								};
