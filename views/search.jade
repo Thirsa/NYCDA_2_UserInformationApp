@@ -4,10 +4,14 @@ html
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js")
 		script(type="text/javascript").
 			$(document).ready(function(){
+				var time = 0;
+				var lasttime = 0;
 				$("#inputs").keyup(function(){ // If there is a key press in the input box with the id of "inputs" in the form tag below, the function will be called
+					time = Date.now()
+					if (time - lasttime > 3000 || time === 0){
+					lasttime = time;
 					$("#suggest").html("");
 					var inputs = $("#inputs").val().trim(); //The .trim() prevents the dropdown from showing when only the spacebar is hit
-					setTimeout(function() {
 						if (inputs){ //this if makes sure the function only gets executed if inputs has a value, eg; exists
 							$.post(("/search/?inputs="+$("#inputs").val()), function(response, status){
 							// $.post(("/search/?inputs="+ "inputs", function(response, status){												
@@ -21,7 +25,7 @@ html
 								};
 							});
 						};
-					}, 300);
+					}
 				});
 			});
 		body
