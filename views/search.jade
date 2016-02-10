@@ -1,18 +1,40 @@
+doctype html
 html
 	head
-		link(rel='stylesheet', href='css/jade.css', type='text/css')
-	body
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js")
+		script(type="text/javascript").
+			$(document).ready(function(){
+				$("#inputs").keyup(function(){ // If there is a key press in the input box with the id of "inputs" in the form tag below, the function will be called
+					$("#suggest").html("");
+					var inputs = $("#inputs").val().trim(); //The .trim() prevents the dropdown from showing when only the spacebar is hit
+					if (inputs){ //this if makes sure the function only gets executed if inputs has a value, eg; exists
+						$.post(("/search/?inputs="+$("#inputs").val()), function(response, status){
+						// $.post(("/search/?inputs="+ "inputs", function(response, status){													
+							for(result in response){
+								$("#suggest").append("<li>" + response[result] + "</li>");
+								$("#suggest li").click(function(){
+									// var value = $(this).html();
+									// $("#inputs").val(value);
+									$("#inputs").val($(this).html());
+								})	
+							};
+						});
+					};
+				});
+			});
+		body
 		h1(id="head") Welcome
 		div.searchBox
 			br
 			label Search for users by:
-			form(name="login", action="/search", method="post")
+			form(name="login", action="/searchresult", method="get")
 				br
-				input(id="input" type="text", name="firstname", placeholder=" Firstname/ Lastname or Email")
+				input(id="inputs" type="text", name="firstname", placeholder=" Firstname/ Lastname or Email", autocomplete="off")
+				ul(id="suggest")
 				br
-				input(id="input" type="submit", value="Search" style="position: absolute; left: -9999px; width: 1px; height: 1px;" tabindex="-1")
+				input(id="input2" type="submit",value="Search")
 	br
 	a(href='/create_user') Create a new user
+	br
 	a(href='/') Home
-
 

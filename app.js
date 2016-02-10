@@ -9,14 +9,14 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', './views');
 app.set('view engine', 'jade');
 
-app.get('/', function (req, res) {
-	fs.readFile('public/users.json', function (error, data) {
-		if (error) {
-			console.log(error);
+app.get('/', function (request, response) {
+	fs.readFile('public/users.json', function (err, data) {
+		if (err) {
+			throw err;
 		}
 
 		var parsedData = JSON.parse(data);
-		res.render('index', {users: parsedData});
+		response.render('index', {users: parsedData});
 	});
 });
 
@@ -31,12 +31,11 @@ app.get('/create_user', function (request, response) {
 app.post('/create_user', bodyParser.urlencoded({
 	extended: true
 }), function(request, response) {
-	fs.readFile('public/users.json', "utf-8", function(err, data) {
+	fs.readFile('public/users.json', "utf-8", function (err, data) {
 		if (err) {
 			throw err;
 		}
 		users = JSON.parse(data);
-		console.log (users);
 		firstname = request.body.firstname;
 		lastname = request.body.lastname;
 		email = request.body.email;
@@ -55,25 +54,37 @@ app.post('/create_user', bodyParser.urlencoded({
 app.post('/search', bodyParser.urlencoded({
 	extended: true
 }), function(request, response) {
-		console.log("meow meow moew")
 
-	fs.readFile('public/users.json', 'utf-8', function(err, data) {
+	fs.readFile('public/users.json', 'utf-8', function (err, data) {
 		if (err) {
 			throw err;
 		}
 		users = JSON.parse(data);
 		var results = [];
 		for (i = 0; i < users.length; i++) {
-			if (users[i].firstname === request.body.firstname || users[i].firstname === request.body.lastname) {
-				results = results.concat(users[i]);
+			if (request.query.inputs != " " && users[i].firstname.indexOf(request.query.inputs) === 0){results.push(users[i].firstname)
 			}
 		}
-		response.render('searchresult', {
-			results: results
-		});
+		response.send(results)
 	});
 });
 
+app.get('/searchresult', function (request, response){
+	fs.readFile('public/users.json', function (err, data) {
+		if (err) {
+			throw err;
+		}
+		var users = JSON.parse(data);
+		var results = ["This person does not exist"];
+
+		for (i = 0; i < users.length; i++) {
+			if (request.query.firstname === users[i].firstname){results = (users[i].firstname +" "+ users[i].lastname +" "+ users[i].email)
+			}
+		}
+		response.render('searchresult', {results: results});
+	});
+})
+
 var server = app.listen(3001, function () {
-	console.log('Example app listening on port: ' + server.address().port);
+	console.log("Port" +" "+server.address().port);
 });
